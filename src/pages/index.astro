@@ -1,0 +1,35 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ThemeToggle from "../components/ThemeToggle.vue";
+import Navigation from "../components/Navigation.astro";
+import Welcome from "../sections/Welcome.astro";
+import Introduction from "../sections/Introduction.astro";
+import Projects from "../sections/Projects.astro";
+import People from "../sections/People.astro";
+---
+
+<Layout>
+  <ThemeToggle client:load />
+  <Navigation />
+
+  <main>
+    <Welcome />
+    <Introduction />
+    <Projects />
+    <People />
+  </main>
+
+  <!-- Footer -->
+  <footer
+    class="py-8 bg-gray-50 dark:bg-gray-950 border-t border-gray-200 dark:border-gray-800"
+  >
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <p class="text-gray-600 dark:text-gray-400">
+        &copy; {new Date().getFullYear()} 小猴偷米工作室. 保留所有权利.
+      </p>
+      <p class="text-sm text-gray-500 dark:text-gray-500 mt-2">
+        东南大学学生开发工作室
+      </p>
+    </div>
+  </footer>
+</Layout>

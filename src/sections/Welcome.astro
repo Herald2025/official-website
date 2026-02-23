@@ -1,0 +1,171 @@
+---
+
+---
+
+<section
+  id="welcome"
+  class="relative h-screen flex items-center justify-center overflow-hidden bg-white dark:bg-black transition-colors duration-300"
+>
+  <canvas id="particle-canvas" class="absolute inset-0 w-full h-full"></canvas>
+
+  <div class="relative z-10 text-center px-4">
+    <h1
+      class="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 text-gray-900 dark:text-white transition-colors duration-300"
+    >
+      小猴偷米
+    </h1>
+    <p
+      class="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-4 transition-colors duration-300"
+    >
+      东南大学学生开发工作室
+    </p>
+    <p
+      class="text-base md:text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto transition-colors duration-300"
+    >
+      用代码创造可能，用技术连接校园
+    </p>
+
+    <div class="mt-12">
+      <a
+        href="#introduction"
+        class="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-gray-300 dark:border-white/30 text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/10 transition-all duration-300"
+      >
+        <span>了解更多</span>
+        <svg
+          class="w-4 h-4 animate-bounce"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div
+    class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce"
+  >
+    <svg
+      class="w-6 h-6 text-gray-400 dark:text-white/50 transition-colors duration-300"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+    </svg>
+  </div>
+</section>
+
+<script>
+  // Simple particle system
+  (function () {
+    const canvas = document.getElementById(
+      "particle-canvas",
+    ) as HTMLCanvasElement;
+    if (!canvas) return;
+
+    const maybeCtx = canvas.getContext("2d");
+    if (!maybeCtx) return;
+    const ctx: CanvasRenderingContext2D = maybeCtx;
+
+    let particles: Array<{
+      x: number;
+      y: number;
+      vx: number;
+      vy: number;
+      size: number;
+      opacity: number;
+    }> = [];
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    function createParticles() {
+      particles = [];
+      const count = window.innerWidth < 768 ? 50 : 100;
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vx: (Math.random() - 0.5) * 0.5,
+          vy: (Math.random() - 0.5) * 0.5,
+          size: Math.random() * 2 + 1,
+          opacity: Math.random() * 0.5 + 0.3,
+        });
+      }
+    }
+
+    function animate() {
+      const isDark = document.documentElement.classList.contains("dark");
+      const primaryColor =
+        getComputedStyle(document.documentElement)
+          .getPropertyValue("--primary-color")
+          .trim() || "#845ec2";
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      particles.forEach((p) => {
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = isDark
+          ? `rgba(132, 94, 194, ${p.opacity})`
+          : primaryColor +
+            Math.floor(p.opacity * 255)
+              .toString(16)
+              .padStart(2, "0");
+        ctx.fill();
+      });
+
+      // Draw connections in light mode
+      if (!isDark) {
+        particles.forEach((p1, i) => {
+          particles.slice(i + 1).forEach((p2) => {
+            const dx = p1.x - p2.x;
+            const dy = p1.y - p2.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 150) {
+              ctx.beginPath();
+              ctx.moveTo(p1.x, p1.y);
+              ctx.lineTo(p2.x, p2.y);
+              ctx.strokeStyle =
+                primaryColor +
+                Math.floor((1 - dist / 150) * 30)
+                  .toString(16)
+                  .padStart(2, "0");
+              ctx.stroke();
+            }
+          });
+        });
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    resize();
+    createParticles();
+    animate();
+
+    window.addEventListener("resize", () => {
+      resize();
+      createParticles();
+    });
+  })();
+</script>
