@@ -162,8 +162,8 @@ onUnmounted(() => {
 }
 
 .member-card:hover .avatar-wrapper {
-  border-color: var(--primary-color, #845ec2);
-  box-shadow: 0 0 20px rgba(132, 94, 194, 0.3);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 20px rgba(var(--primary-color-rgb), 0.3);
 }
 
 .avatar-img {
@@ -183,12 +183,12 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(132, 94, 194, 0);
+  background: rgba(var(--primary-color-rgb), 0);
   transition: background 0.3s ease;
 }
 
 .member-card:hover .avatar-overlay {
-  background: rgba(132, 94, 194, 0.4);
+  background: rgba(var(--primary-color-rgb), 0.4);
 }
 
 .view-text {

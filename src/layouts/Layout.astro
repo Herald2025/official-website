@@ -1,4 +1,6 @@
 ---
+import { ViewTransitions } from "astro:transitions";
+
 interface Props {
   title?: string;
 }
@@ -16,6 +18,7 @@ const { title = "小猴偷米 - 东南大学学生开发工作室" } = Astro.pro
       content="小猴偷米 - 东南大学学生开发工作室，致力于为校园生活提供便捷的技术解决方案"
     />
     <title>{title}</title>
+    <ViewTransitions />
     <script is:inline>
       // Prevent flash of wrong theme
       (function () {

@@ -1,0 +1,179 @@
+---
+interface Props {
+    particleCount?: number;
+    showConnections?: boolean;
+    mode?: "absolute" | "fixed";
+}
+
+const {
+    particleCount = 60,
+    showConnections = false,
+    mode = "absolute",
+} = Astro.props;
+---
+
+<canvas
+    class:list={[
+        "particle-canvas",
+        mode === "fixed" ? "particle-fixed" : "particle-absolute",
+    ]}
+    data-particle-count={particleCount}
+    data-show-connections={showConnections}></canvas>
+
+<style>
+    .particle-canvas {
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        pointer-events: none;
+    }
+    .particle-absolute {
+        position: absolute;
+        inset: 0;
+    }
+    .particle-fixed {
+        position: fixed;
+        inset: 0;
+    }
+</style>
+
+<script is:inline>
+    function initParticles() {
+        // Find all particle canvases (could be multiple on the page, but we handle each)
+        const canvases = document.querySelectorAll(".particle-canvas");
+        canvases.forEach(function (canvas) {
+            // Skip if already initialized
+            if (canvas._particleInit) return;
+            canvas._particleInit = true;
+
+            const pCount = parseInt(canvas.dataset.particleCount) || 60;
+            const showConn = canvas.dataset.showConnections === "true";
+
+            const maybeCtx = canvas.getContext("2d");
+            if (!maybeCtx) return;
+            const ctx = maybeCtx;
+
+            let particles = [];
+            let animationId = null;
+            let destroyed = false;
+
+            function resize() {
+                // For absolute mode, use parent dimensions; for fixed, use window
+                if (canvas.classList.contains("particle-fixed")) {
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
+                } else {
+                    const parent = canvas.parentElement;
+                    if (parent) {
+                        canvas.width = parent.offsetWidth;
+                        canvas.height = parent.offsetHeight;
+                    }
+                }
+            }
+
+            function createParticles() {
+                particles = [];
+                const count =
+                    window.innerWidth < 768 ? Math.floor(pCount / 2) : pCount;
+                for (let i = 0; i < count; i++) {
+                    particles.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        vx: (Math.random() - 0.5) * 0.5,
+                        vy: (Math.random() - 0.5) * 0.5,
+                        size: Math.random() * 2 + 1,
+                        opacity: Math.random() * 0.5 + 0.3,
+                    });
+                }
+            }
+
+            function animate() {
+                if (destroyed) return;
+
+                const isDark =
+                    document.documentElement.classList.contains("dark");
+                const primaryColor = getComputedStyle(document.documentElement)
+                    .getPropertyValue("--primary-color")
+                    .trim();
+                const primaryRgb = getComputedStyle(document.documentElement)
+                    .getPropertyValue("--primary-color-rgb")
+                    .trim();
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                particles.forEach(function (p) {
+                    p.x += p.vx;
+                    p.y += p.vy;
+
+                    if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                    if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fillStyle = isDark
+                        ? "rgba(" + primaryRgb + ", " + p.opacity + ")"
+                        : primaryColor +
+                          Math.floor(p.opacity * 255)
+                              .toString(16)
+                              .padStart(2, "0");
+                    ctx.fill();
+                });
+
+                // Draw connections
+                if (showConn && !isDark) {
+                    particles.forEach(function (p1, i) {
+                        particles.slice(i + 1).forEach(function (p2) {
+                            var dx = p1.x - p2.x;
+                            var dy = p1.y - p2.y;
+                            var dist = Math.sqrt(dx * dx + dy * dy);
+                            if (dist < 150) {
+                                ctx.beginPath();
+                                ctx.moveTo(p1.x, p1.y);
+                                ctx.lineTo(p2.x, p2.y);
+                                ctx.strokeStyle =
+                                    primaryColor +
+                                    Math.floor((1 - dist / 150) * 30)
+                                        .toString(16)
+                                        .padStart(2, "0");
+                                ctx.stroke();
+                            }
+                        });
+                    });
+                }
+
+                animationId = requestAnimationFrame(animate);
+            }
+
+            resize();
+            createParticles();
+            animate();
+
+            function onResize() {
+                if (destroyed) return;
+                resize();
+                createParticles();
+            }
+            window.addEventListener("resize", onResize);
+
+            // Cleanup on ViewTransitions navigation
+            document.addEventListener(
+                "astro:before-preparation",
+                function cleanup() {
+                    destroyed = true;
+                    if (animationId) cancelAnimationFrame(animationId);
+                    window.removeEventListener("resize", onResize);
+                    canvas._particleInit = false;
+                    document.removeEventListener(
+                        "astro:before-preparation",
+                        cleanup,
+                    );
+                },
+            );
+        });
+    }
+
+    // Run on initial load
+    initParticles();
+    // Run after ViewTransitions navigation
+    document.addEventListener("astro:page-load", initParticles);
+</script>

@@ -3,21 +3,25 @@ import { ref, computed, watch } from 'vue';
 
 export type DarkMode = 'dark' | 'light';
 
-const PRIMARY_COLOR = '#845ec2';
-
 export const useThemeStore = defineStore('theme', () => {
   // State
   const darkMode = ref<DarkMode>('dark');
 
-  // Getters
-  const primaryColor = computed(() => PRIMARY_COLOR);
+  // Getters — read primary color from CSS variable at runtime
+  const primaryColor = computed(() => {
+    if (typeof document !== 'undefined') {
+      return getComputedStyle(document.documentElement)
+        .getPropertyValue('--primary-color')
+        .trim();
+    }
+    return '';
+  });
   const isDark = computed(() => darkMode.value === 'dark');
 
   // Actions
   function setDarkMode(mode: DarkMode) {
     darkMode.value = mode;
     localStorage.setItem('darkMode', mode);
-    updateCSSVariables();
     updateDarkModeClass();
   }
 
@@ -25,11 +29,6 @@ export const useThemeStore = defineStore('theme', () => {
     setDarkMode(darkMode.value === 'dark' ? 'light' : 'dark');
   }
 
-  function updateCSSVariables() {
-    if (typeof document !== 'undefined') {
-      document.documentElement.style.setProperty('--primary-color', PRIMARY_COLOR);
-    }
-  }
 
   function updateDarkModeClass() {
     if (typeof document !== 'undefined') {
@@ -54,14 +53,12 @@ export const useThemeStore = defineStore('theme', () => {
         darkMode.value = prefersDark ? 'dark' : 'light';
       }
 
-      updateCSSVariables();
       updateDarkModeClass();
     }
   }
 
   // Watch for changes
   watch(darkMode, () => {
-    updateCSSVariables();
     updateDarkModeClass();
   });
 

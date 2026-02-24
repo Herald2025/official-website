@@ -6,6 +6,7 @@ import Welcome from "../sections/Welcome.astro";
 import Introduction from "../sections/Introduction.astro";
 import Projects from "../sections/Projects.astro";
 import People from "../sections/People.astro";
+import SectionDivider from "../components/SectionDivider.astro";
 ---
 
 <Layout>
@@ -14,8 +15,11 @@ import People from "../sections/People.astro";
 
   <main>
     <Welcome />
-    <Introduction />
+    <SectionDivider text="探索我们的产品" />
     <Projects />
+    <SectionDivider text="了解小猴偷米的故事" />
+    <Introduction />
+    <SectionDivider text="认识我们的团队" />
     <People />
   </main>
 

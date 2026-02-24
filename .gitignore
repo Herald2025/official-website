@@ -12,6 +12,8 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+# requirement
+requirement.md
 
 # environment variables
 .env

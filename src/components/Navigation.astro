@@ -1,8 +1,8 @@
 ---
 const navItems = [
   { label: "首页", href: "#welcome" },
-  { label: "关于我们", href: "#introduction" },
   { label: "项目", href: "#projects" },
+  { label: "关于我们", href: "#introduction" },
   { label: "团队", href: "#people" },
 ];
 ---
@@ -58,7 +58,7 @@ const navItems = [
   }
 
   .nav-item:hover {
-    color: #845ec2;
+    color: var(--primary-color);
   }
 
   /* --- 深色模式适配 --- */
@@ -72,6 +72,6 @@ const navItems = [
   }
 
   :global(.dark) .nav-item:hover {
-    color: #845ec2;
+    color: var(--primary-color);
   }
 </style>

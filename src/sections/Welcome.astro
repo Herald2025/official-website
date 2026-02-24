@@ -1,12 +1,12 @@
 ---
-
+import ParticleBackground from "../components/ParticleBackground.astro";
 ---
 
 <section
   id="welcome"
   class="relative h-screen flex items-center justify-center overflow-hidden bg-white dark:bg-black transition-colors duration-300"
 >
-  <canvas id="particle-canvas" class="absolute inset-0 w-full h-full"></canvas>
+  <ParticleBackground particleCount={100} showConnections={true} />
 
   <div class="relative z-10 text-center px-4">
     <h1
@@ -27,7 +27,7 @@
 
     <div class="mt-12">
       <a
-        href="#introduction"
+        href="#projects"
         class="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-gray-300 dark:border-white/30 text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/10 transition-all duration-300"
       >
         <span>了解更多</span>
@@ -65,107 +65,3 @@
     </svg>
   </div>
 </section>
-
-<script>
-  // Simple particle system
-  (function () {
-    const canvas = document.getElementById(
-      "particle-canvas",
-    ) as HTMLCanvasElement;
-    if (!canvas) return;
-
-    const maybeCtx = canvas.getContext("2d");
-    if (!maybeCtx) return;
-    const ctx: CanvasRenderingContext2D = maybeCtx;
-
-    let particles: Array<{
-      x: number;
-      y: number;
-      vx: number;
-      vy: number;
-      size: number;
-      opacity: number;
-    }> = [];
-
-    function resize() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-
-    function createParticles() {
-      particles = [];
-      const count = window.innerWidth < 768 ? 50 : 100;
-      for (let i = 0; i < count; i++) {
-        particles.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * 0.5,
-          vy: (Math.random() - 0.5) * 0.5,
-          size: Math.random() * 2 + 1,
-          opacity: Math.random() * 0.5 + 0.3,
-        });
-      }
-    }
-
-    function animate() {
-      const isDark = document.documentElement.classList.contains("dark");
-      const primaryColor =
-        getComputedStyle(document.documentElement)
-          .getPropertyValue("--primary-color")
-          .trim() || "#845ec2";
-
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      particles.forEach((p) => {
-        p.x += p.vx;
-        p.y += p.vy;
-
-        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = isDark
-          ? `rgba(132, 94, 194, ${p.opacity})`
-          : primaryColor +
-            Math.floor(p.opacity * 255)
-              .toString(16)
-              .padStart(2, "0");
-        ctx.fill();
-      });
-
-      // Draw connections in light mode
-      if (!isDark) {
-        particles.forEach((p1, i) => {
-          particles.slice(i + 1).forEach((p2) => {
-            const dx = p1.x - p2.x;
-            const dy = p1.y - p2.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < 150) {
-              ctx.beginPath();
-              ctx.moveTo(p1.x, p1.y);
-              ctx.lineTo(p2.x, p2.y);
-              ctx.strokeStyle =
-                primaryColor +
-                Math.floor((1 - dist / 150) * 30)
-                  .toString(16)
-                  .padStart(2, "0");
-              ctx.stroke();
-            }
-          });
-        });
-      }
-
-      requestAnimationFrame(animate);
-    }
-
-    resize();
-    createParticles();
-    animate();
-
-    window.addEventListener("resize", () => {
-      resize();
-      createParticles();
-    });
-  })();
-</script>
