@@ -33,6 +33,20 @@ const { title = "小猴偷米 - 东南大学学生开发工作室" } = Astro.pro
           document.documentElement.classList.remove("dark");
         }
       })();
+
+      // Re-apply theme BEFORE ViewTransitions swaps in the new page DOM
+      document.addEventListener("astro:before-swap", function (e) {
+        const savedMode = localStorage.getItem("darkMode");
+        if (
+          savedMode === "dark" ||
+          (!savedMode &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches)
+        ) {
+          e.newDocument.documentElement.classList.add("dark");
+        } else {
+          e.newDocument.documentElement.classList.remove("dark");
+        }
+      });
     </script>
     <style is:global>
       @import "../styles/global.css";
