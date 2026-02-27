@@ -20,32 +20,36 @@ const { title = "小猴偷米 - 东南大学学生开发工作室" } = Astro.pro
     <title>{title}</title>
     <ViewTransitions />
     <script is:inline>
+      function resolveTheme() {
+        const savedMode = localStorage.getItem("darkMode");
+        return (
+          savedMode === "dark" ||
+          (!savedMode &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches)
+        )
+          ? "dark"
+          : "light";
+      }
+
+      function applyTheme(targetDocument, mode) {
+        const root = targetDocument.documentElement;
+        if (mode === "dark") {
+          root.classList.add("dark");
+          root.dataset.theme = "dark";
+        } else {
+          root.classList.remove("dark");
+          root.dataset.theme = "light";
+        }
+      }
+
       // Prevent flash of wrong theme
       (function () {
-        const savedMode = localStorage.getItem("darkMode");
-        if (
-          savedMode === "dark" ||
-          (!savedMode &&
-            window.matchMedia("(prefers-color-scheme: dark)").matches)
-        ) {
-          document.documentElement.classList.add("dark");
-        } else {
-          document.documentElement.classList.remove("dark");
-        }
+        applyTheme(document, resolveTheme());
       })();
 
-      // Re-apply theme BEFORE ViewTransitions swaps in the new page DOM
+      // Re-apply theme BEFORE ClientRouter swaps in the new page DOM
       document.addEventListener("astro:before-swap", function (e) {
-        const savedMode = localStorage.getItem("darkMode");
-        if (
-          savedMode === "dark" ||
-          (!savedMode &&
-            window.matchMedia("(prefers-color-scheme: dark)").matches)
-        ) {
-          e.newDocument.documentElement.classList.add("dark");
-        } else {
-          e.newDocument.documentElement.classList.remove("dark");
-        }
+        applyTheme(e.newDocument, resolveTheme());
       });
     </script>
     <style is:global>

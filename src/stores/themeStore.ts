@@ -32,10 +32,13 @@ export const useThemeStore = defineStore('theme', () => {
 
   function updateDarkModeClass() {
     if (typeof document !== 'undefined') {
+      const root = document.documentElement;
       if (darkMode.value === 'dark') {
-        document.documentElement.classList.add('dark');
+        root.classList.add('dark');
+        root.dataset.theme = 'dark';
       } else {
-        document.documentElement.classList.remove('dark');
+        root.classList.remove('dark');
+        root.dataset.theme = 'light';
       }
     }
   }
