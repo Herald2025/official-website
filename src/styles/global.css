@@ -2,8 +2,8 @@
 @custom-variant dark (&:where(html.dark, html.dark *));
 
 :root {
-  --primary-color: #845ec2;
-  --primary-color-rgb: 132, 94, 194;
+  --primary-color: #13acd9;
+  --primary-color-rgb: 19, 172, 217;
 }
 
 /* Theme: change only --primary-color and --primary-color-rgb above */

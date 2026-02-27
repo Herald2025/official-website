@@ -1,6 +1,5 @@
 import type { App } from 'vue';
-import { pinia } from './stores/pinia';
 
-export default (app: App) => {
-  app.use(pinia);
+export default (_app: App) => {
+  // No plugins needed currently
 };

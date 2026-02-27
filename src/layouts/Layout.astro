@@ -22,11 +22,9 @@ const { title = "小猴偷米 - 东南大学学生开发工作室" } = Astro.pro
     <script is:inline>
       function resolveTheme() {
         const savedMode = localStorage.getItem("darkMode");
-        return (
-          savedMode === "dark" ||
+        return savedMode === "dark" ||
           (!savedMode &&
             window.matchMedia("(prefers-color-scheme: dark)").matches)
-        )
           ? "dark"
           : "light";
       }
@@ -46,6 +44,13 @@ const { title = "小猴偷米 - 东南大学学生开发工作室" } = Astro.pro
       (function () {
         applyTheme(document, resolveTheme());
       })();
+
+      // Expose global toggle for any component to use
+      window.toggleDarkMode = function () {
+        var next = resolveTheme() === "dark" ? "light" : "dark";
+        localStorage.setItem("darkMode", next);
+        applyTheme(document, next);
+      };
 
       // Re-apply theme BEFORE ClientRouter swaps in the new page DOM
       document.addEventListener("astro:before-swap", function (e) {

@@ -18,19 +18,30 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, computed } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import { Sun, Moon } from 'lucide-vue-next';
-import { useThemeStore } from '../stores/themeStore';
 
-const themeStore = useThemeStore();
+const isDark = ref(true);
 
-const isDark = computed(() => themeStore.isDark);
-
-function toggleTheme() {
-  themeStore.toggleDarkMode();
+function syncTheme() {
+  isDark.value = document.documentElement.classList.contains('dark');
 }
 
+function toggleTheme() {
+  (window as any).toggleDarkMode();
+  syncTheme();
+}
+
+let observer: MutationObserver | null = null;
+
 onMounted(() => {
-  themeStore.init();
+  syncTheme();
+  observer = new MutationObserver(syncTheme);
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['class'],
+  });
 });
+
+onUnmounted(() => observer?.disconnect());
 </script>
