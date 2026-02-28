@@ -15,7 +15,6 @@
         v-for="(member, index) in displayMembers"
         :key="`member-${index}`"
         class="member-card"
-        @click="onMemberClick(member)"
       >
         <div class="avatar-wrapper">
           <img
@@ -24,9 +23,6 @@
             class="avatar-img"
             @error="handleImageError"
           />
-          <div class="avatar-overlay">
-            <span class="view-text">查看</span>
-          </div>
         </div>
         <h3 class="member-name" :class="{ 'dark-mode': isDark }">{{ member.name }}</h3>
         <p class="member-role">{{ member.role }}</p>
@@ -72,10 +68,7 @@ function onWheel(e: WheelEvent) {
   }
 }
 
-function onMemberClick(member: Member) {
-  // 预留二级页面接口：未来可跳转到成员详情页
-  console.log('Member clicked:', member.name, '- 二级页面接口预留');
-}
+
 
 function handleImageError(e: Event) {
   const target = e.target as HTMLImageElement;
@@ -141,7 +134,6 @@ onUnmounted(() => {
   flex-shrink: 0;
   width: 100px;
   text-align: center;
-  cursor: pointer;
   transition: transform 0.3s ease;
 }
 
@@ -177,33 +169,7 @@ onUnmounted(() => {
   transform: scale(1.1);
 }
 
-.avatar-overlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(var(--primary-color-rgb), 0);
-  transition: background 0.3s ease;
-}
 
-.member-card:hover .avatar-overlay {
-  background: rgba(var(--primary-color-rgb), 0.4);
-}
-
-.view-text {
-  color: white;
-  font-size: 0.75rem;
-  font-weight: 600;
-  opacity: 0;
-  transform: translateY(5px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.member-card:hover .view-text {
-  opacity: 1;
-  transform: translateY(0);
-}
 
 /* 成员名称：light 模式黑色，dark 模式白色 */
 .member-name {
