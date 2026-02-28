@@ -120,21 +120,25 @@ const {
                 });
 
                 // Draw connections
-                if (showConn && !isDark) {
+                if (showConn) {
                     particles.forEach(function (p1, i) {
                         particles.slice(i + 1).forEach(function (p2) {
                             var dx = p1.x - p2.x;
                             var dy = p1.y - p2.y;
                             var dist = Math.sqrt(dx * dx + dy * dy);
                             if (dist < 150) {
+                                var alpha = isDark
+                                    ? (1 - dist / 150) * 0.35
+                                    : (1 - dist / 150) * 0.12;
                                 ctx.beginPath();
                                 ctx.moveTo(p1.x, p1.y);
                                 ctx.lineTo(p2.x, p2.y);
-                                ctx.strokeStyle =
-                                    primaryColor +
-                                    Math.floor((1 - dist / 150) * 30)
-                                        .toString(16)
-                                        .padStart(2, "0");
+                                ctx.strokeStyle = isDark
+                                    ? "rgba(" + primaryRgb + ", " + alpha + ")"
+                                    : primaryColor +
+                                      Math.floor(alpha * 255)
+                                          .toString(16)
+                                          .padStart(2, "0");
                                 ctx.stroke();
                             }
                         });

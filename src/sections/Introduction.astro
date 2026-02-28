@@ -1,37 +1,44 @@
 ---
 const milestones = [
   {
-    year: '2015',
-    title: '工作室成立',
-    description: '一群热爱技术的学生在东南大学成立了小猴偷米工作室',
+    year: "2001",
+    description:
+      "东南大学先声网是最早的前身，早期团队参加了学校思政网站的建设工作",
   },
   {
-    year: '2016',
-    title: '首个产品上线',
-    description: '小猴偷米App正式上线，为东大师生提供便捷的校园服务',
+    year: "2014",
+    description: "小猴偷米诞生，上线微信公众号服务",
   },
   {
-    year: '2018',
-    title: '用户突破5万',
-    description: '累计服务用户超过5万人，成为东大最受欢迎的校园应用',
+    year: "2016",
+    description:
+      "推出小猴偷米系列产品安卓应用、iOS应用、微信小程序、微信公众号以及PWA",
   },
   {
-    year: '2020',
-    title: '技术升级',
-    description: '全面重构技术架构，引入微服务架构，提升系统稳定性',
+    year: "2020",
+    description: "东南学工系统上线",
   },
   {
-    year: '2023',
-    title: '持续创新',
-    description: '持续推出新功能，服务更多东大师生',
+    year: "2024",
+    description: "信息学院导师会客厅系统运维",
+  },
+  {
+    year: "2025",
+    description:
+      "畅行线AI Agent平台搭建，机关党委网站版面改造，信小息AI就业小程序开发，辅楼预约系统运维...",
   },
 ];
 ---
 
-<section id="introduction" class="py-20 md:py-32 bg-white dark:bg-black transition-colors duration-300">
+<section
+  id="introduction"
+  class="py-20 md:py-32 bg-white dark:bg-black transition-colors duration-300"
+>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-16">
-      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+      <h2
+        class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4"
+      >
         关于我们
       </h2>
       <p class="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
@@ -39,57 +46,297 @@ const milestones = [
       </p>
     </div>
 
-    <!-- Timeline -->
-    <div class="relative">
-      <!-- Timeline line -->
-      <div class="absolute left-1/2 transform -translate-x-1/2 w-0.5 h-full bg-gray-200 dark:bg-gray-800 hidden md:block" />
+    <!-- Desktop: Horizontal Timeline -->
+    <div class="timeline-horizontal" id="timeline-viewport">
+      <!-- Horizontal line -->
+      <div class="h-timeline-line"></div>
 
-      <div class="space-y-12">
-        {milestones.map((milestone, index) => (
-          <div class={`relative flex items-center ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
-            <!-- Content -->
-            <div class="w-full md:w-1/2 px-4 md:px-8">
-              <div class={`bg-gray-50 dark:bg-gray-900 p-6 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-primary transition-colors duration-300 ${index % 2 === 0 ? 'md:text-right' : 'md:text-left'}`}>
-                <span class="inline-block px-3 py-1 text-sm font-medium text-white bg-primary rounded-full mb-3">
+      <div class="h-timeline-grid">
+        {
+          milestones.map((milestone, index) => (
+            <div class="h-timeline-item" data-index={index}>
+              <div class="h-timeline-dot" />
+              <div class="h-timeline-card">
+                <span class="inline-block px-1 py-1 text-sm font-medium text-primary">
                   {milestone.year}
                 </span>
-                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                  {milestone.title}
-                </h3>
-                <p class="text-gray-600 dark:text-gray-400">
+                <p class="text-sm text-gray-900 dark:text-gray-400">
                   {milestone.description}
                 </p>
               </div>
             </div>
-
-            <!-- Timeline dot -->
-            <div class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-primary rounded-full border-4 border-white dark:border-black hidden md:block" />
-
-            <!-- Spacer for the other side -->
-            <div class="hidden md:block w-1/2" />
-          </div>
-        ))}
+          ))
+        }
       </div>
     </div>
 
-    <!-- Stats -->
-    <div class="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8">
-      <div class="text-center">
-        <div class="text-4xl font-bold text-primary mb-2">10万+</div>
-        <div class="text-gray-600 dark:text-gray-400">累计用户</div>
-      </div>
-      <div class="text-center">
-        <div class="text-4xl font-bold text-primary mb-2">20+</div>
-        <div class="text-gray-600 dark:text-gray-400">团队成员</div>
-      </div>
-      <div class="text-center">
-        <div class="text-4xl font-bold text-primary mb-2">8年</div>
-        <div class="text-gray-600 dark:text-gray-400">服务历程</div>
-      </div>
-      <div class="text-center">
-        <div class="text-4xl font-bold text-primary mb-2">10+</div>
-        <div class="text-gray-600 dark:text-gray-400">产品项目</div>
-      </div>
+    <!-- Mobile: Vertical Timeline -->
+    <div class="v-timeline" id="timeline-viewport-mobile">
+      <div class="v-timeline-line"></div>
+      {
+        milestones.map((milestone, index) => (
+          <div class="v-timeline-item" data-index={index}>
+            <div class="v-timeline-dot" />
+            <div class="v-timeline-card">
+              <span class="inline-block px-1 py-1 text-sm font-medium text-primary">
+                {milestone.year}
+              </span>
+              <p class="text-sm text-gray-600 dark:text-gray-400">
+                {milestone.description}
+              </p>
+            </div>
+          </div>
+        ))
+      }
     </div>
   </div>
 </section>
+
+<style>
+  /* ===== Desktop: Horizontal ===== */
+  .timeline-horizontal {
+    position: relative;
+    padding: 2rem 0 1rem;
+    display: block;
+  }
+
+  .h-timeline-line {
+    position: absolute;
+    top: 2rem;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--primary-color) 5%,
+      var(--primary-color) 95%,
+      transparent
+    );
+    opacity: 0.35;
+  }
+
+  .h-timeline-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1rem;
+    position: relative;
+  }
+
+  .h-timeline-item {
+    position: relative;
+    padding-top: 2.5rem;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .h-timeline-item.animate-in {
+    animation: slideUp 0.5s ease-out forwards;
+  }
+
+  .h-timeline-dot {
+    position: absolute;
+    top: calc(2rem - 7px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    border: 3px solid white;
+    box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.3);
+    z-index: 2;
+    top: -7px;
+  }
+
+  :global(html.dark) .h-timeline-dot {
+    border-color: black;
+  }
+
+  .h-timeline-card {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    transition: border-color 0.3s;
+    height: 100%;
+  }
+
+  .h-timeline-card:hover {
+    border-color: var(--primary-color);
+  }
+
+  :global(html.dark) .h-timeline-card {
+    background: #111827;
+    border-color: #1f2937;
+  }
+
+  :global(html.dark) .h-timeline-card:hover {
+    border-color: var(--primary-color);
+  }
+
+  /* ===== Mobile: Vertical ===== */
+  .v-timeline {
+    display: none;
+    position: relative;
+    padding-left: 2rem;
+  }
+
+  .v-timeline-line {
+    position: absolute;
+    left: 6px;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(
+      180deg,
+      transparent,
+      var(--primary-color) 5%,
+      var(--primary-color) 95%,
+      transparent
+    );
+    opacity: 0.35;
+  }
+
+  .v-timeline-item {
+    position: relative;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+
+  .v-timeline-item.animate-in {
+    animation: slideRight 0.5s ease-out forwards;
+  }
+
+  .v-timeline-dot {
+    position: absolute;
+    left: -2rem;
+    top: 1rem;
+    transform: translateX(-0.5px);
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    border: 3px solid white;
+    box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.3);
+    z-index: 2;
+  }
+
+  :global(html.dark) .v-timeline-dot {
+    border-color: black;
+  }
+
+  .v-timeline-card {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    transition: border-color 0.3s;
+  }
+
+  .v-timeline-card:hover {
+    border-color: var(--primary-color);
+  }
+
+  :global(html.dark) .v-timeline-card {
+    background: #111827;
+    border-color: #1f2937;
+  }
+
+  :global(html.dark) .v-timeline-card:hover {
+    border-color: var(--primary-color);
+  }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 768px) {
+    .timeline-horizontal {
+      display: none;
+    }
+    .v-timeline {
+      display: block;
+    }
+  }
+
+  /* ===== Animations ===== */
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideRight {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+</style>
+
+<script is:inline>
+  function initTimeline() {
+    // Desktop horizontal
+    var hViewport = document.getElementById("timeline-viewport");
+    // Mobile vertical
+    var vViewport = document.getElementById("timeline-viewport-mobile");
+
+    function setup(container, selector) {
+      if (!container) return;
+      var items = container.querySelectorAll(selector);
+      if (!items.length) return;
+
+      // Disconnect any previous observer
+      if (container._timelineObs) {
+        container._timelineObs.disconnect();
+      }
+
+      function resetItems() {
+        items.forEach(function (item) {
+          item.classList.remove("animate-in");
+        });
+        // Force reflow so removing class takes effect before re-adding
+        void container.offsetWidth;
+      }
+
+      function animateItems() {
+        items.forEach(function (item, i) {
+          setTimeout(function () {
+            item.classList.add("animate-in");
+          }, i * 150);
+        });
+      }
+
+      var observer = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              resetItems();
+              animateItems();
+            }
+          });
+        },
+        { threshold: 0.15 },
+      );
+
+      observer.observe(container);
+      container._timelineObs = observer;
+    }
+
+    setup(hViewport, ".h-timeline-item");
+    setup(vViewport, ".v-timeline-item");
+  }
+
+  // Run on initial load
+  initTimeline();
+  // Run after ClientRouter navigation
+  document.addEventListener("astro:page-load", initTimeline);
+</script>
