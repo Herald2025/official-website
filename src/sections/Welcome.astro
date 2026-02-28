@@ -8,24 +8,24 @@ import ParticleBackground from "../components/ParticleBackground.astro";
 >
   <ParticleBackground particleCount={120} showConnections={true} />
 
-  <div class="relative z-10 text-center px-4">
+  <div class="relative z-10 text-center px-4" id="welcome-content">
     <h1
-      class="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 text-gray-900 dark:text-white transition-colors duration-300"
+      class="welcome-anim welcome-anim-1 text-5xl md:text-7xl lg:text-8xl font-bold mb-6 text-gray-900 dark:text-white transition-colors duration-300"
     >
       小猴偷米
     </h1>
     <p
-      class="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-4 transition-colors duration-300"
+      class="welcome-anim welcome-anim-2 text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-4 transition-colors duration-300"
     >
       东南大学学生开发工作室
     </p>
     <p
-      class="text-base md:text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto transition-colors duration-300"
+      class="welcome-anim welcome-anim-3 text-base md:text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto transition-colors duration-300"
     >
       用代码创造可能，用技术连接校园
     </p>
 
-    <div class="mt-12">
+    <div class="mt-12 welcome-anim welcome-anim-4">
       <a
         href="#projects"
         class="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-gray-300 dark:border-white/30 text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/10 transition-all duration-300"
@@ -49,7 +49,7 @@ import ParticleBackground from "../components/ParticleBackground.astro";
 
   <!-- Scroll indicator -->
   <div
-    class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce"
+    class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce welcome-anim welcome-anim-5"
   >
     <svg
       class="w-6 h-6 text-gray-400 dark:text-white/50 transition-colors duration-300"
@@ -65,3 +65,66 @@ import ParticleBackground from "../components/ParticleBackground.astro";
     </svg>
   </div>
 </section>
+
+<style>
+  .welcome-anim {
+    opacity: 0;
+    transform: translateY(40px);
+    animation: welcomeSlideUp 0.7s ease-out forwards;
+  }
+  .welcome-anim-1 {
+    animation-delay: 0.1s;
+  }
+  .welcome-anim-2 {
+    animation-delay: 0.25s;
+  }
+  .welcome-anim-3 {
+    animation-delay: 0.4s;
+  }
+  .welcome-anim-4 {
+    animation-delay: 0.55s;
+  }
+  .welcome-anim-5 {
+    animation-delay: 0.7s;
+  }
+
+  @keyframes welcomeSlideUp {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<script is:inline>
+  function replayWelcomeAnim() {
+    var items = document.querySelectorAll(".welcome-anim");
+    items.forEach(function (el) {
+      el.style.animation = "none";
+      void el.offsetWidth; // force reflow
+      el.style.animation = "";
+    });
+  }
+
+  // Replay on ClientRouter page navigation
+  document.addEventListener("astro:page-load", replayWelcomeAnim);
+
+  // Replay when navigating back via anchor links (e.g. nav bar #welcome)
+  window.addEventListener("hashchange", function () {
+    if (location.hash === "#welcome") {
+      replayWelcomeAnim();
+    }
+  });
+
+  // Also handle clicks when hash is already #welcome (hashchange won't fire)
+  document.addEventListener("click", function (e) {
+    var link = e.target.closest("a[href='#welcome']");
+    if (link) {
+      replayWelcomeAnim();
+    }
+  });
+</script>
