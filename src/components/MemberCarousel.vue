@@ -118,7 +118,7 @@ onUnmounted(() => {
 
 .member-track {
   display: flex;
-  gap: 2rem;
+  gap: 1.25rem;
   width: max-content;
   animation: marquee 40s linear infinite;
   transform: translateX(calc(var(--offset, 0px)));
@@ -139,7 +139,7 @@ onUnmounted(() => {
 
 .member-card {
   flex-shrink: 0;
-  width: 140px;
+  width: 100px;
   text-align: center;
   cursor: pointer;
   transition: transform 0.3s ease;
@@ -151,12 +151,12 @@ onUnmounted(() => {
 
 .avatar-wrapper {
   position: relative;
-  width: 100px;
-  height: 100px;
-  margin: 0 auto 0.75rem;
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 0.5rem;
   border-radius: 50%;
   overflow: hidden;
-  border: 3px solid transparent;
+  border: 2px solid transparent;
   background-color: #e5e7eb;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }

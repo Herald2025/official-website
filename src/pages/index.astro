@@ -10,8 +10,10 @@ import SectionDivider from "../components/SectionDivider.astro";
 ---
 
 <Layout>
-  <ThemeToggle client:load />
-  <Navigation />
+  <div class="hidden md:block">
+    <ThemeToggle client:load />
+    <Navigation />
+  </div>
 
   <main>
     <Welcome />
