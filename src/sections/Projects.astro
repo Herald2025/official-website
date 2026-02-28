@@ -40,7 +40,7 @@ import { projects } from "../data/projects";
             />
           </div>
           <div class="p-6">
-            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-primary transition-colors">
+            <h3 class="project-title text-xl font-bold text-gray-900 dark:text-white mb-2">
               {project.title}
             </h3>
             <p class="text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
@@ -59,3 +59,18 @@ import { projects } from "../data/projects";
     }
   </div>
 </section>
+
+<style>
+  .project-title {
+    transition:
+      color 0.5s ease-out,
+      letter-spacing 0.5s ease-out,
+      text-shadow 0.5s ease-out;
+  }
+
+  :global(.group:hover) .project-title {
+    color: var(--primary-color);
+    letter-spacing: 0.02em;
+    text-shadow: 0 1px 8px rgba(var(--primary-color-rgb), 0.25);
+  }
+</style>

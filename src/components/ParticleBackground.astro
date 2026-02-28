@@ -120,7 +120,7 @@ const {
                 });
 
                 // Draw connections
-                if (showConn) {
+                if (showConn && !isDark) {
                     particles.forEach(function (p1, i) {
                         particles.slice(i + 1).forEach(function (p2) {
                             var dx = p1.x - p2.x;
