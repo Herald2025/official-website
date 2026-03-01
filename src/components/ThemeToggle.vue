@@ -1,6 +1,6 @@
 <template>
   <div
-    class="fixed top-2 right-4 z-50 flex items-center w-16 h-8 rounded-full bg-gray-200 dark:bg-gray-700 cursor-pointer transition-colors duration-300 shadow-lg"
+    class="fixed top-4 right-4 z-50 flex items-center w-16 h-8 rounded-full bg-gray-200 dark:bg-gray-700 cursor-pointer transition-colors duration-300 shadow-lg"
     @click="toggleTheme"
     aria-label="切换主题"
   >
